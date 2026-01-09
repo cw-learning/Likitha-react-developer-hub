@@ -16,12 +16,12 @@ const defaultProps: Required<RenderOptions> = {
 	onClick: vi.fn(),
 };
 
-const renderButton = (props?: RenderOptions) => {
-	const mergedProps = { ...defaultProps, ...props };
+const renderButton = (additionalProps?: RenderOptions) => {
+	const props = { ...defaultProps, ...additionalProps };
 
 	return render(
-		<Button disabled={mergedProps.disabled} onClick={mergedProps.onClick}>
-			{mergedProps.children}
+		<Button disabled={props.disabled} onClick={props.onClick}>
+			{props.children}
 		</Button>,
 	);
 };

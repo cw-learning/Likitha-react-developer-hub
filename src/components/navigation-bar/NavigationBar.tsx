@@ -1,15 +1,10 @@
-import { Heart, Home } from "lucide-react";
+import { NAVIGATION_ITEMS } from "../../constants/navigation";
 import { Button } from "../button/Button";
 
 interface NavigationBarProps {
 	currentView: "home" | "favorites";
 	onNavigate: (view: "home" | "favorites") => void;
 }
-
-const NAVIGATION_ITEMS = [
-	{ view: "home" as const, icon: Home, label: "Resources" },
-	{ view: "favorites" as const, icon: Heart, label: "Favorites" },
-];
 
 export const NavigationBar = ({
 	currentView,
