@@ -1,14 +1,8 @@
-import { useState } from "react";
-import { Layout } from "./app/layout/Layout";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/routes";
 
 const App = () => {
-	const [currentView, setCurrentView] = useState<"home" | "favorites">("home");
-
-	return (
-		<Layout currentView={currentView} onNavigate={setCurrentView}>
-			{null}
-		</Layout>
-	);
+	return <RouterProvider router={router} />;
 };
 
 export default App;

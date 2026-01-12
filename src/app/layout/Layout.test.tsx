@@ -1,35 +1,30 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, vi } from "vitest";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { describe, it } from "vitest";
 import { Layout } from "./Layout";
 
-type View = "home" | "favorites";
-
 interface RenderOptions {
-	currentView?: View;
-	onNavigate?: (view: View) => void;
-	children?: React.ReactNode;
+	initialRoute?: string;
+	outletContent?: React.ReactNode;
 }
 
-const defaultProps: Required<RenderOptions> = {
-	currentView: "home",
-	onNavigate: vi.fn(),
-	children: <div>Page Content</div>,
-};
-
-const renderLayout = (additionalProps?: RenderOptions) => {
-	const props = { ...defaultProps, ...additionalProps };
+const renderLayout = (options?: RenderOptions) => {
+	const { initialRoute = "/", outletContent = <div>Page Content</div> } =
+		options || {};
 
 	return render(
-		<Layout currentView={props.currentView} onNavigate={props.onNavigate}>
-			{props.children}
-		</Layout>,
+		<MemoryRouter initialEntries={[initialRoute]}>
+			<Routes>
+				<Route path="/" element={<Layout />}>
+					<Route index element={outletContent} />
+					<Route path="favorites" element={outletContent} />
+				</Route>
+			</Routes>
+		</MemoryRouter>,
 	);
 };
 
 describe("Layout", () => {
-	const user = userEvent.setup();
-
 	it("should render the logo", () => {
 		renderLayout();
 
@@ -48,26 +43,25 @@ describe("Layout", () => {
 		expect(navigation).toBeInTheDocument();
 	});
 
-	it("should render children inside main content", () => {
+	it("should render outlet content inside main", () => {
 		renderLayout();
 
 		const content = screen.getByText("Page Content");
+		const main = screen.getByRole("main");
 
 		expect(content).toBeInTheDocument();
+		expect(main).toContainElement(content);
 	});
 
-	it("should call onNavigate when navigation item is clicked", async () => {
-		const onNavigate = vi.fn();
+	it("should render navigation items", () => {
+		renderLayout();
 
-		renderLayout({ onNavigate });
-
-		const favoritesLink = screen.getByRole("button", {
-			name: /favorites/i,
-		});
-
-		await user.click(favoritesLink);
-
-		expect(onNavigate).toHaveBeenCalled();
+		expect(
+			screen.getByRole("button", { name: /resources/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /favorites/i }),
+		).toBeInTheDocument();
 	});
 
 	it("should render footer", () => {

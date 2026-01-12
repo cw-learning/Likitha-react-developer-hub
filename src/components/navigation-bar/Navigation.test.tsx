@@ -1,28 +1,19 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, it } from "vitest";
 import { NavigationBar } from "./NavigationBar";
 
-type View = "home" | "favorites";
-
 interface RenderOptions {
-	currentView?: View;
-	onNavigate?: (view: View) => void;
+	initialRoute?: string;
 }
 
-const defaultProps: Required<RenderOptions> = {
-	currentView: "home",
-	onNavigate: vi.fn(),
-};
-
-const renderNavigationBar = (additionalProps?: RenderOptions) => {
-	const props = { ...defaultProps, ...additionalProps };
+const renderNavigationBar = (options?: RenderOptions) => {
+	const { initialRoute = "/" } = options || {};
 
 	return render(
-		<NavigationBar
-			currentView={props.currentView}
-			onNavigate={props.onNavigate}
-		/>,
+		<MemoryRouter initialEntries={[initialRoute]}>
+			<NavigationBar />
+		</MemoryRouter>,
 	);
 };
 
@@ -40,45 +31,37 @@ describe("NavigationBar", () => {
 
 		const buttons = screen.getAllByRole("button");
 
-		expect(buttons.length).toBeGreaterThan(0);
+		expect(buttons).toHaveLength(2);
 	});
 
-	it("should mark current view as active using aria-current", () => {
-		renderNavigationBar({ currentView: "home" });
+	it("should mark home as active when on home route", () => {
+		renderNavigationBar({ initialRoute: "/" });
 
-		const activeButton = screen.getByRole("button", {
-			current: "page",
+		const homeButton = screen.getByRole("button", {
+			name: /resources/i,
 		});
 
-		expect(activeButton).toBeInTheDocument();
+		expect(homeButton).toHaveAttribute("aria-current", "page");
 	});
 
-	it("should call onNavigate with favorites when favorites button is clicked", async () => {
-		const user = userEvent.setup();
-		const onNavigate = vi.fn();
+	it("should mark favorites as active when on favorites route", () => {
+		renderNavigationBar({ initialRoute: "/favorites" });
 
-		renderNavigationBar({ onNavigate });
-
-		const buttons = screen.getAllByRole("button");
-
-		await user.click(buttons[1]);
-
-		expect(onNavigate).toHaveBeenCalledWith("favorites");
-	});
-
-	it("should call onNavigate with home when home button is clicked", async () => {
-		const user = userEvent.setup();
-		const onNavigate = vi.fn();
-
-		renderNavigationBar({
-			currentView: "favorites",
-			onNavigate,
+		const favoritesButton = screen.getByRole("button", {
+			name: /favorites/i,
 		});
 
-		const buttons = screen.getAllByRole("button");
+		expect(favoritesButton).toHaveAttribute("aria-current", "page");
+	});
 
-		await user.click(buttons[0]);
+	it("should render navigation links with correct labels", () => {
+		renderNavigationBar();
 
-		expect(onNavigate).toHaveBeenCalledWith("home");
+		expect(
+			screen.getByRole("button", { name: /resources/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /favorites/i }),
+		).toBeInTheDocument();
 	});
 });
