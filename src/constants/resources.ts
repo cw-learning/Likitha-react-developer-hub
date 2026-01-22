@@ -1,3 +1,5 @@
+export const RESOURCES_TABLE = "resources";
+
 export const FILTER_OPTIONS = [
 	{
 		id: "resourceTypes",
