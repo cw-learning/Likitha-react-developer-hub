@@ -18,10 +18,10 @@ export const Badge = ({
 	} as const;
 
 	return (
-		<span
+		<output
 			className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${variantStyles[variant]} ${className}`}
 		>
 			{children}
-		</span>
+		</output>
 	);
 };

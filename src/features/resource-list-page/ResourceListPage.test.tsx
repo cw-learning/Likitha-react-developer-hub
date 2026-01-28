@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it } from "vitest";
 import { ResourceListPage } from "./ResourceListPage";
@@ -103,7 +103,7 @@ describe("ResourceListPage", () => {
 		const checkbox = screen.getByRole("checkbox", { name: "Article" });
 		await user.click(checkbox);
 
-		// Badge should show selected count
-		expect(screen.getByText("1")).toBeInTheDocument();
+		// Badge should show selected count within the filter button
+		expect(within(filterButton).getByRole("status")).toHaveTextContent("1");
 	});
 });

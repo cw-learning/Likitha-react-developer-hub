@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FilterDropdown } from "../../components/filter-dropdown/FilterDropdown";
 import { SearchBar } from "../../components/search-bar/SearchBar";
 import { FILTER_OPTIONS } from "../../constants/resources";
@@ -7,12 +7,15 @@ export const ResourceListPage = (): React.JSX.Element => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [filters, setFilters] = useState<Record<string, string[]>>({});
 
-	const handleFilterChange = (filterId: string, selected: string[]) => {
-		setFilters((prev) => ({
-			...prev,
-			[filterId]: selected,
-		}));
-	};
+	const handleFilterChange = useCallback(
+		(filterId: string, selected: string[]) => {
+			setFilters((prev) => ({
+				...prev,
+				[filterId]: selected,
+			}));
+		},
+		[],
+	);
 
 	return (
 		<div className="space-y-5">
@@ -30,7 +33,7 @@ export const ResourceListPage = (): React.JSX.Element => {
 					<FilterDropdown
 						key={filter.id}
 						label={filter.label}
-						availableOptions={[...filter.options]}
+						availableOptions={filter.options}
 						selectedOptions={filters[filter.id] || []}
 						onSelectionChange={(selected) =>
 							handleFilterChange(filter.id, selected)

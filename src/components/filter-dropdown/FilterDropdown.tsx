@@ -6,7 +6,7 @@ import { Checkbox } from "../checkbox/Checkbox";
 
 interface FilterDropdownProps {
 	label: string;
-	availableOptions: string[];
+	availableOptions: readonly string[];
 	selectedOptions: string[];
 	onSelectionChange: (selected: string[]) => void;
 }
@@ -59,6 +59,7 @@ export const FilterDropdown = ({
 	return (
 		<div className="relative" ref={dropdownRef}>
 			<Button
+				type="button"
 				variant="outline"
 				onClick={() => setIsOpen((prev) => !prev)}
 				aria-expanded={isOpen}

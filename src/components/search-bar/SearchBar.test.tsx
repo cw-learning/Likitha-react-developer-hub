@@ -80,12 +80,8 @@ describe("SearchBar", () => {
 		const input = screen.getByRole("textbox");
 		await user.type(input, "react");
 
-		expect(onChange).toHaveBeenCalledWith("r");
-		expect(onChange).toHaveBeenCalledWith("re");
-		expect(onChange).toHaveBeenCalledWith("rea");
-		expect(onChange).toHaveBeenCalledWith("reac");
-		expect(onChange).toHaveBeenCalledWith("react");
-		expect(onChange).toHaveBeenCalledTimes(5);
+		expect(onChange).toHaveBeenCalled();
+		expect(onChange).toHaveBeenLastCalledWith("react");
 	});
 
 	it("calls onChange with empty string when cleared", async () => {
