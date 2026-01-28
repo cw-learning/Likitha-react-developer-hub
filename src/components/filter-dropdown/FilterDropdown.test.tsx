@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, vi } from "vitest";
+import { beforeEach, describe, it, vi } from "vitest";
 import { FilterDropdown } from "./FilterDropdown";
 
 interface RenderOptions {
@@ -32,6 +32,10 @@ const renderFilterDropdown = (additionalProps?: RenderOptions) => {
 
 describe("FilterDropdown", () => {
 	const user = userEvent.setup();
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
 
 	it("should render the toggle button", () => {
 		renderFilterDropdown();
@@ -78,7 +82,7 @@ describe("FilterDropdown", () => {
 		const button = screen.getByRole("button");
 		await user.click(button);
 
-		const checkbox = screen.getAllByRole("checkbox")[0];
+		const checkbox = screen.getByRole("checkbox", { name: "One" });
 
 		expect(checkbox).toBeInTheDocument();
 	});
@@ -91,7 +95,7 @@ describe("FilterDropdown", () => {
 		const button = screen.getByRole("button");
 		await user.click(button);
 
-		const checkbox = screen.getAllByRole("checkbox")[0];
+		const checkbox = screen.getByRole("checkbox", { name: "One" });
 		await user.click(checkbox);
 
 		expect(onSelectionChange).toHaveBeenCalled();

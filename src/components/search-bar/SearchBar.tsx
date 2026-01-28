@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { CircleX, Search } from "lucide-react";
+import { useId, useState } from "react";
 import { Button } from "../button/Button";
 import { Input } from "../input/Input";
 
@@ -17,8 +17,9 @@ export const SearchBar = ({
 	label = "Search",
 	showClearButton = true,
 	onChange,
-}: SearchBarProps) => {
+}: SearchBarProps): React.JSX.Element => {
 	const [internalValue, setInternalValue] = useState("");
+	const inputId = useId();
 	const searchQuery =
 		controlledValue !== undefined ? controlledValue : internalValue;
 
@@ -39,7 +40,7 @@ export const SearchBar = ({
 
 	return (
 		<div>
-			<label htmlFor="search-input" className="sr-only">
+			<label htmlFor={inputId} className="sr-only">
 				{label}
 			</label>
 
@@ -50,10 +51,10 @@ export const SearchBar = ({
 				/>
 
 				<Input
-					id="search-input"
+					id={inputId}
 					type="text"
 					placeholder={placeholder}
-					className="pl-10 pr-10 bg-white w-96"
+					className="pl-10 pr-10 bg-white w-full max-w-md"
 					autoComplete="off"
 					value={searchQuery}
 					onChange={handleChange}

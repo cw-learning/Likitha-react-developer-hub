@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, it, vi } from "vitest";
 import { SearchBar } from "./SearchBar";
 
 describe("SearchBar", () => {
@@ -71,5 +71,33 @@ describe("SearchBar", () => {
 		const input = screen.getByRole("textbox");
 
 		expect(input).toHaveValue("pre-filled text");
+	});
+
+	it("calls onChange with the typed value", async () => {
+		const onChange = vi.fn();
+		render(<SearchBar onChange={onChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.type(input, "react");
+
+		expect(onChange).toHaveBeenCalledWith("r");
+		expect(onChange).toHaveBeenCalledWith("re");
+		expect(onChange).toHaveBeenCalledWith("rea");
+		expect(onChange).toHaveBeenCalledWith("reac");
+		expect(onChange).toHaveBeenCalledWith("react");
+		expect(onChange).toHaveBeenCalledTimes(5);
+	});
+
+	it("calls onChange with empty string when cleared", async () => {
+		const onChange = vi.fn();
+		render(<SearchBar onChange={onChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.type(input, "react");
+
+		const clearButton = screen.getByRole("button", { name: /clear/i });
+		await user.click(clearButton);
+
+		expect(onChange).toHaveBeenLastCalledWith("");
 	});
 });

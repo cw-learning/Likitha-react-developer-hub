@@ -63,7 +63,7 @@ describe("ResourceListPage", () => {
 
 		await user.click(filterButton);
 
-		const checkbox = screen.getAllByRole("checkbox")[0];
+		const checkbox = screen.getByRole("checkbox", { name: "Article" });
 
 		expect(checkbox).toBeInTheDocument();
 	});
@@ -77,8 +77,33 @@ describe("ResourceListPage", () => {
 
 		await user.click(filterButton);
 
-		const checkbox = screen.getAllByRole("checkbox")[0];
+		const checkbox = screen.getByRole("checkbox", { name: "Beginner" });
 
 		expect(checkbox).toBeInTheDocument();
+	});
+
+	it("should update search input as user types", async () => {
+		renderResourceListPage();
+
+		const searchInput = screen.getByRole("textbox");
+
+		await user.type(searchInput, "react hooks");
+
+		expect(searchInput).toHaveValue("react hooks");
+	});
+
+	it("should update filter selection when checkbox is clicked", async () => {
+		renderResourceListPage();
+
+		const filterButton = screen.getByRole("button", {
+			name: /resource/i,
+		});
+		await user.click(filterButton);
+
+		const checkbox = screen.getByRole("checkbox", { name: "Article" });
+		await user.click(checkbox);
+
+		// Badge should show selected count
+		expect(screen.getByText("1")).toBeInTheDocument();
 	});
 });

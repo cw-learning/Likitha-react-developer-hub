@@ -45,7 +45,7 @@ describe("Badge", () => {
 
 		const badge = screen.getByText(/badge/i);
 
-		expect(badge.className).toContain("bg-gray");
+		expect(badge).toHaveClass("bg-gray-100");
 	});
 
 	it("should apply primary variant styles when variant is primary", () => {
@@ -53,7 +53,7 @@ describe("Badge", () => {
 
 		const badge = screen.getByText(/badge/i);
 
-		expect(badge.className).toContain("bg-blue");
+		expect(badge).toHaveClass("bg-blue-100");
 	});
 
 	it("should apply success variant styles when variant is success", () => {
@@ -61,7 +61,7 @@ describe("Badge", () => {
 
 		const badge = screen.getByText(/badge/i);
 
-		expect(badge.className).toContain("bg-green");
+		expect(badge).toHaveClass("bg-green-100");
 	});
 
 	it("should apply warning variant styles when variant is warning", () => {
@@ -69,7 +69,7 @@ describe("Badge", () => {
 
 		const badge = screen.getByText(/badge/i);
 
-		expect(badge.className).toContain("bg-amber");
+		expect(badge).toHaveClass("bg-amber-100");
 	});
 
 	it("should apply error variant styles when variant is error", () => {
@@ -77,7 +77,7 @@ describe("Badge", () => {
 
 		const badge = screen.getByText(/badge/i);
 
-		expect(badge.className).toContain("bg-red");
+		expect(badge).toHaveClass("bg-red-100");
 	});
 
 	it("should merge custom className with variant styles", () => {
@@ -85,6 +85,6 @@ describe("Badge", () => {
 
 		const badge = screen.getByText(/badge/i);
 
-		expect(badge.className).toContain("custom-class");
+		expect(badge).toHaveClass("custom-class");
 	});
 });

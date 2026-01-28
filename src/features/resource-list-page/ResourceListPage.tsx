@@ -3,7 +3,8 @@ import { FilterDropdown } from "../../components/filter-dropdown/FilterDropdown"
 import { SearchBar } from "../../components/search-bar/SearchBar";
 import { FILTER_OPTIONS } from "../../constants/resources";
 
-export const ResourceListPage = () => {
+export const ResourceListPage = (): React.JSX.Element => {
+	const [searchQuery, setSearchQuery] = useState("");
 	const [filters, setFilters] = useState<Record<string, string[]>>({});
 
 	const handleFilterChange = (filterId: string, selected: string[]) => {
@@ -18,18 +19,18 @@ export const ResourceListPage = () => {
 			<h1 className="text-3xl font-bold text-center text-gray-900">
 				React Resource Hub
 			</h1>
-			<p className="text-gray-600 text-center ">
+			<p className="text-gray-600 text-center">
 				Discover high-quality React learning resources
 			</p>
 			<div className="flex justify-center">
-				<SearchBar />
+				<SearchBar searchQuery={searchQuery} onChange={setSearchQuery} />
 			</div>
 			<div className="flex justify-start gap-3">
 				{FILTER_OPTIONS.map((filter) => (
 					<FilterDropdown
 						key={filter.id}
 						label={filter.label}
-						availableOptions={filter.options}
+						availableOptions={[...filter.options]}
 						selectedOptions={filters[filter.id] || []}
 						onSelectionChange={(selected) =>
 							handleFilterChange(filter.id, selected)

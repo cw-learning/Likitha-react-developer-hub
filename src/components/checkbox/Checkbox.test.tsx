@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, vi } from "vitest";
 import { createRef } from "react";
+import { beforeEach, describe, it, vi } from "vitest";
 import { Checkbox } from "./Checkbox";
 
 interface RenderOptions {
@@ -34,6 +34,10 @@ const renderCheckbox = (additionalProps?: RenderOptions) => {
 
 describe("Checkbox", () => {
 	const user = userEvent.setup();
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
 
 	it("should render a checkbox input", () => {
 		renderCheckbox();

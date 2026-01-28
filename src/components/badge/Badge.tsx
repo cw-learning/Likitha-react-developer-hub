@@ -8,7 +8,7 @@ export const Badge = ({
 	children,
 	variant = "default",
 	className = "",
-}: BadgeProps) => {
+}: BadgeProps): React.JSX.Element => {
 	const variantStyles = {
 		default: "bg-gray-100 text-gray-800",
 		primary: "bg-blue-100 text-blue-800",

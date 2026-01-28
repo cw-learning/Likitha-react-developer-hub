@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, vi } from "vitest";
 import { createRef } from "react";
+import { beforeEach, describe, it, vi } from "vitest";
 import { Input } from "./Input";
 
 interface RenderOptions {
@@ -35,6 +35,10 @@ const renderInput = (additionalProps?: RenderOptions) => {
 describe("Input", () => {
 	const user = userEvent.setup();
 
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
 	it("should render an input element", () => {
 		renderInput();
 
@@ -54,8 +58,9 @@ describe("Input", () => {
 	it("should associate label with input using htmlFor", () => {
 		renderInput({ id: "email" });
 
-		const input = screen.getByRole("textbox");
+		const input = screen.getByLabelText(/email/i);
 
+		expect(input).toBeInTheDocument();
 		expect(input).toHaveAttribute("id", "email");
 	});
 

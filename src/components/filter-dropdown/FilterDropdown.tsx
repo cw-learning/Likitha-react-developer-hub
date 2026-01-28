@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Badge } from "../badge/Badge";
 import { Button } from "../button/Button";
 import { Checkbox } from "../checkbox/Checkbox";
@@ -16,9 +16,10 @@ export const FilterDropdown = ({
 	availableOptions,
 	selectedOptions,
 	onSelectionChange,
-}: FilterDropdownProps) => {
+}: FilterDropdownProps): React.JSX.Element => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
+	const menuId = useId();
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -59,10 +60,10 @@ export const FilterDropdown = ({
 		<div className="relative" ref={dropdownRef}>
 			<Button
 				variant="outline"
-				onClick={() => setIsOpen(!isOpen)}
+				onClick={() => setIsOpen((prev) => !prev)}
 				aria-expanded={isOpen}
 				aria-haspopup="true"
-				aria-controls="filter-dropdown-menu"
+				aria-controls={menuId}
 			>
 				<span className="font-medium">{label}</span>
 				{selectedOptions.length > 0 && (
@@ -78,7 +79,7 @@ export const FilterDropdown = ({
 
 			{isOpen && (
 				<fieldset
-					id="filter-dropdown-menu"
+					id={menuId}
 					className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-2"
 				>
 					<legend className="sr-only">{label} filter options</legend>

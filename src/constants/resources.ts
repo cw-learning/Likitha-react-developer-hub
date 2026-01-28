@@ -9,4 +9,4 @@ export const FILTER_OPTIONS = [
 		label: "Skill Levels",
 		options: ["Beginner", "Intermediate", "Expert"],
 	},
-];
+] as const;
