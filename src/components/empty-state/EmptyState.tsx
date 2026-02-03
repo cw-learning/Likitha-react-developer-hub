@@ -1,7 +1,14 @@
-import { FileQuestion, Inbox, Search, FolderOpen } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { FileQuestion, FolderOpen, Inbox, Search } from "lucide-react";
 
-type EmptyStateVariant = "default" | "search" | "noData" | "folder";
+const variantIcons = {
+	default: Inbox,
+	search: Search,
+	noData: FileQuestion,
+	folder: FolderOpen,
+} as const satisfies Record<string, LucideIcon>;
+
+type EmptyStateVariant = keyof typeof variantIcons;
 
 interface EmptyStateProps {
 	title: string;
@@ -11,13 +18,6 @@ interface EmptyStateProps {
 	action?: React.ReactNode;
 	className?: string;
 }
-
-const variantIcons: Record<EmptyStateVariant, LucideIcon> = {
-	default: Inbox,
-	search: Search,
-	noData: FileQuestion,
-	folder: FolderOpen,
-};
 
 export const EmptyState = ({
 	title,
